@@ -4,7 +4,7 @@ In the project directory, you can run:
 
 ### `docker-compose up`
 
-To launch hole project.
+To run the entire project.
 
 ## Learn More
 

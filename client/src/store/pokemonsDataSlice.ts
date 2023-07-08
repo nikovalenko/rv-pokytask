@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { saveAs } from 'file-saver';
 
 import { Pokemon } from '../types/interfaces';
@@ -11,7 +11,7 @@ const initialState: PokemonsDataState = {
   pokemons: [],
 };
 
-const saveFetchedJsonToFile = (state: any, action: { payload: any }) => {
+const saveFetchedJsonToFile = (state: PokemonsDataState, action: PayloadAction<{ pokemons: Pokemon[] }>) => {
   try {
     const jsonData = JSON.stringify(action.payload, null, 2);
     const blob = new Blob([jsonData], { type: 'application/json' });
@@ -32,17 +32,3 @@ export const PokemonsDataSlice = createSlice({
 export const { saveFetchedJson } = PokemonsDataSlice.actions;
 
 export default PokemonsDataSlice.reducer;
-
-// export const PageParamsSlice = createSlice({
-//   name: 'pageParams',
-//   initialState,
-//   reducers: {},
-//   extraReducers: builder => {
-//     builder.addCase(fetchPokemons.fulfilled, (state, action) => {
-//       const { prevPage, currPage, nextPage } = action.payload;
-//       state.pageParams = { prevPage, currPage, nextPage };
-//     });
-//   },
-// });
-
-// export default PageParamsSlice.reducer;

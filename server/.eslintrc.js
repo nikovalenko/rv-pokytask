@@ -27,7 +27,8 @@ module.exports = {
   rules: {
     'import/prefer-default-export': 'off',
     '@typescript-eslint/explicit-module-boundary-types': ['error'],
-    semi: ['error', 'never'],
+    '@typescript-eslint/no-shadow': 'off',
+    'class-methods-use-this': 'off',
     'arrow-parens': ['error', 'as-needed'],
     'no-trailing-spaces': 'error',
     'import/extensions': 'off',
@@ -43,6 +44,5 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     '@typescript-eslint/no-explicit-any': 'off',
     'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': 'warn',
   },
 };

@@ -1,66 +1,74 @@
 import axios from 'axios';
+import bcrypt from 'bcryptjs';
 // import bcrypt from 'bcrypt';
 // import crypto from 'crypto';
 import { useFormik } from 'formik';
 import React from 'react';
 
-// import bcrypt from 'bcrypt';
-import { REGISTER_URL, SALT_ROUNDS } from '../../../config/config';
+import { REGISTER_URL, SALT } from '../../../config/config';
 
 type RegistrationFormProps = {
   onClose: () => void;
 };
 
-const handleRegistr = async (values: { email: string; password: string }) => {
-  try {
-    //sometroubles building crypto libs
+type RefistrData = {
+  name: string;
+  email: string;
+  password: string;
+};
 
-    // const salt = crypto.randomBytes(16).toString('hex');
-    // const hashedPassword = crypto.scryptSync(values.password, salt, 32).toString('hex');
-    // const hashedPassword = await bcrypt.hash(values.password, SALT_ROUNDS);
-    const payload = { ...values, password: values.password };
-    const response = await axios.post(REGISTER_URL, payload);
-
-    if (response.status === 200) {
-      const { message } = response.data;
-      console.log(message);
-    } else {
-      const { error } = response.data;
-      console.log(error);
-    }
-  } catch (error) {
-    console.log(error);
-  }
+type InputErrors = {
+  name?: string;
+  email?: string;
+  password?: string;
 };
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) => {
+  const handleSubmit = async (values: RefistrData) => {
+    try {
+      const hashedPassword = await bcrypt.hash(values.password, SALT);
+      const payload = { ...values, password: hashedPassword };
+      const response = await axios.post(REGISTER_URL, payload);
+
+      if (response.status === 200) {
+        const { message } = response.data;
+        console.log(message);
+      } else {
+        const { error } = response.data;
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    onClose();
+  };
+
+  const handleValidate = (values: RefistrData) => {
+    const errors: InputErrors = {};
+
+    if (!values.name) {
+      errors.name = 'Name is required';
+    }
+
+    if (!values.email) {
+      errors.email = 'Email is required';
+    }
+
+    if (!values.password) {
+      errors.password = 'Password is required';
+    }
+
+    return errors;
+  };
+
   const formik = useFormik({
     initialValues: {
       name: '',
       email: '',
       password: '',
     },
-    onSubmit: values => {
-      handleRegistr(values);
-      onClose();
-    },
-    validate: values => {
-      const errors: any = {};
-
-      if (!values.name) {
-        errors.name = 'Name is required';
-      }
-
-      if (!values.email) {
-        errors.email = 'Email is required';
-      }
-
-      if (!values.password) {
-        errors.password = 'Password is required';
-      }
-
-      return errors;
-    },
+    onSubmit: handleSubmit,
+    validate: handleValidate,
   });
 
   return (

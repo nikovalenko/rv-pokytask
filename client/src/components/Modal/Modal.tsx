@@ -36,13 +36,15 @@ const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
     };
   }, [onClose]);
 
+  const modalRoot = document?.getElementById('modal-root') as HTMLElement;
+
   return ReactDOM.createPortal(
     <div className={modalOverlayClasses}>
       <div ref={modalRef} className={modalContainerClasses}>
         {children}
       </div>
     </div>,
-    document?.getElementById('modal-root')!
+    modalRoot
   );
 };
 

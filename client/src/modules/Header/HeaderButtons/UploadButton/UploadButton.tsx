@@ -5,7 +5,7 @@ import { Button } from '../../../../components';
 import { UPLOAD_URL } from '../../../../config/config';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { saveFetchedJson } from '../../../../store/pokemonsDataSlice';
-import { uploadFailure,uploadRequest } from '../../../../store/uploadSlice';
+import { uploadFailure, uploadRequest } from '../../../../store/uploadSlice';
 
 const UploadButton: FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -45,7 +45,7 @@ const UploadButton: FC = () => {
   };
 
   return (
-    <div>
+    <div className="flex justify-center items-center">
       <input type="file" accept=".csv" onChange={handleFileChange} />
       <Button onClick={handleUpload} disabled={!selectedFile}>
         Upload

@@ -1,8 +1,9 @@
 import axios from 'axios';
+import bcrypt from 'bcryptjs';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
 
-import { LOGIN_URL } from '../../../config/config';
+import { LOGIN_URL, SALT } from '../../../config/config';
 import { useAppDispatch } from '../../../store';
 import { setToken } from '../../../store/tokenSlice';
 
@@ -10,66 +11,61 @@ type LoginFormProps = {
   onClose: () => void;
 };
 
-// const handleLogin = async (values: { email: string; password: string }, dispatch) => {
-//   try {
-//     const response = await axios.post(LOGIN_URL, values);
+type LoginData = {
+  email: string;
+  password: string;
+};
 
-//     if (response.status === 200) {
-//       const { token } = response.data;
-
-//       // Store the token in localStorage
-//     //   localStorage.setItem('token', token);
-
-//       dispatch(setToken(token));
-
-//       // Redirect or perform other actions
-//     } else {
-//       // Handle login error
-//     }
-//   } catch (error) {
-//     // Handle error
-//   }
-// };
+type InputErrors = {
+  email?: string;
+  password?: string;
+};
 
 const LoginForm: FC<LoginFormProps> = ({ onClose }) => {
   const dispatch = useAppDispatch();
+
+  const handleSubmit = async (values: LoginData) => {
+    try {
+      const { email, password } = values;
+      const hashedPassword = await bcrypt.hash(password, SALT);
+      const response = await axios.post(LOGIN_URL, { email, password: hashedPassword });
+
+      if (response.status === 200) {
+        const { token } = response.data;
+
+        dispatch(setToken(token));
+      } else {
+        const { error } = response.data;
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    onClose();
+  };
+
+  const handleValidate = (values: LoginData) => {
+    const errors: InputErrors = {};
+
+    if (!values.email) {
+      errors.email = 'Email is required';
+    }
+
+    if (!values.password) {
+      errors.password = 'Password is required';
+    }
+
+    return errors;
+  };
 
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
-    onSubmit: async values => {
-      try {
-        const response = await axios.post(LOGIN_URL, values);
-
-        if (response.status === 200) {
-          const { token } = response.data;
-
-          dispatch(setToken(token));
-        } else {
-          const { error } = response.data;
-          console.log(error);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-
-      onClose();
-    },
-    validate: values => {
-      const errors: any = {};
-
-      if (!values.email) {
-        errors.email = 'Email is required';
-      }
-
-      if (!values.password) {
-        errors.password = 'Password is required';
-      }
-
-      return errors;
-    },
+    onSubmit: handleSubmit,
+    validate: handleValidate,
   });
 
   return (

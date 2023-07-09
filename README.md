@@ -2,7 +2,7 @@
 
 In the project directory, you can run:
 
-### `docker-compose up`
+### `docker-compose up --build`
 
 To run the entire project.
 

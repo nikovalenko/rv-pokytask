@@ -4,10 +4,10 @@ import csvParser from 'csv-parser';
 import fs from 'fs';
 import { GenericError, Pokemon, PokemonInfo, PokemonResponse } from './interfaces';
 
-export async function handleRequest<T>(
+export const handleRequest = async <T>(
   requestConfig: AxiosRequestConfig,
   res: Response,
-): Promise<T> {
+): Promise<T> => {
   try {
     const response: AxiosResponse<T> = await axios(requestConfig);
     return response.data;
@@ -27,9 +27,9 @@ export async function handleRequest<T>(
     }
     throw error;
   }
-}
+};
 
-export function getIdFromUrl(url: string): number | null {
+export const getIdFromUrl = (url: string): number | null => {
   const lastSlashIndex = url.lastIndexOf('/');
   const secondLastSlashIndex = url.lastIndexOf('/', lastSlashIndex - 1);
   if (lastSlashIndex > secondLastSlashIndex && secondLastSlashIndex !== -1) {
@@ -38,7 +38,7 @@ export function getIdFromUrl(url: string): number | null {
     return Number.isNaN(Number(id)) ? null : id;
   }
   return null;
-}
+};
 
 export const parseCSV = (filePath: string): Promise<any[]> =>
   new Promise((resolve, reject) => {

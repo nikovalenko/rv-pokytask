@@ -5,14 +5,10 @@ import User from '../models/User';
 import { JWT_SECRET, SALT } from '../constants/pokeApi.constants';
 
 export class AuthService {
-  public welcomeMessage(req: Request, res: Response): Response<any, Record<string, any>> {
-    return res.status(200).send('Welcome to pokeAPI REST by Mykyta Kovalenko');
-  }
-
   public async login(
     req: Request,
     res: Response,
-  ): Promise<Response<any, Record<string, any>> | undefined> {
+  ): Promise<Response<any, Record<string, any>>> {
     try {
       const { email, password } = req.body;
 
@@ -36,7 +32,7 @@ export class AuthService {
   public async register(
     req: Request,
     res: Response,
-  ): Promise<Response<any, Record<string, any>> | undefined> {
+  ): Promise<Response<any, Record<string, any>>> {
     try {
       const { name, email, password } = req.body;
       const existingUser = await User.findOne({ email });

@@ -10,3 +10,5 @@ To run the entire project.
 
 A simple full-stack app that allows you to play with (https://pokeapi.co/docs/v2) and responsive design.
 The client and server can work separately from their folders.
+
+There is a main.tf file for AWS deployment but currently it is a mock.

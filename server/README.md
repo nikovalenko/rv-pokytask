@@ -33,3 +33,7 @@ To run eslint check
 ### `docker-compose up`
 
 To set up mongoDB (Uncoment local URL for mongo in src/constants/pokeApi.constants )
+
+### `npm run test`
+
+To run api supertests

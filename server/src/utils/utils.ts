@@ -1,32 +1,23 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Response } from 'express';
 import csvParser from 'csv-parser';
 import fs from 'fs';
-import { GenericError, Pokemon, PokemonInfo, PokemonResponse } from './interfaces';
+import { Pokemon, PokemonResponse } from './api.interfaces';
+import { GetPokemonInfo } from './app.interfaces';
 
-export const handleRequest = async <T>(
-  requestConfig: AxiosRequestConfig,
-  res: Response,
-): Promise<T> => {
-  try {
-    const response: AxiosResponse<T> = await axios(requestConfig);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError: AxiosError = error;
-      if (axiosError.response) {
-        const { status, data } = axiosError.response;
-        res.status(status).json({ error: data });
-      } else if (axiosError.request) {
-        res.status(500).json({ error: 'Network Error', details: axiosError.request });
-      } else {
-        res.status(500).json({ error: 'Error Occurred', details: axiosError.message });
-      }
-    } else {
-      res.status(500).json({ error: 'Error Occurred', details: error });
+export const errorHandle = (err: unknown, res: Response): Response<any, Record<string, any>> => {
+  if (axios.isAxiosError(err)) {
+    const axiosError: AxiosError = err;
+    if (axiosError.response) {
+      const { status, data } = axiosError.response;
+      return res.status(status).json({ error: data });
     }
-    throw error;
+    if (axiosError.request) {
+      return res.status(500).json({ error: 'Network Error', details: axiosError.request });
+    }
+    return res.status(500).json({ error: 'Error Occurred', details: axiosError.message });
   }
+  return res.status(500).json({ error: 'Unknow Error Occurred', details: err });
 };
 
 export const getIdFromUrl = (url: string): number | null => {
@@ -40,9 +31,9 @@ export const getIdFromUrl = (url: string): number | null => {
   return null;
 };
 
-export const parseCSV = (filePath: string): Promise<any[]> =>
+export const parseCSV = (filePath: string): Promise<Record<string, string>[]> =>
   new Promise((resolve, reject) => {
-    const results: string[] = [];
+    const results: Record<string, string>[] = [];
 
     fs.createReadStream(filePath)
       .pipe(csvParser())
@@ -51,7 +42,7 @@ export const parseCSV = (filePath: string): Promise<any[]> =>
       .on('error', error => reject(error));
   });
 
-export const getDataAboutPokemon = (res: PokemonResponse): PokemonInfo => {
+export const getDataAboutPokemon = (res: PokemonResponse): GetPokemonInfo => {
   const { name, id, height, weight, types, stats } = res;
   const { hp, attack, defense } = stats.reduce(
     (acc: object, record: { stat: { name: string }; base_stat: number }) => ({
@@ -79,16 +70,3 @@ export const getMainPokemonData = (pokemon: Pokemon): { name: string; id: number
   name: pokemon.name,
   id: getIdFromUrl(pokemon.url) as number,
 });
-
-export const handleGeneralErrors = async (
-  callback: () => object,
-  res: Response,
-): Promise<Response<any, Record<string, any>>> => {
-  try {
-    const data = await callback();
-    return res.status(200).json(data);
-  } catch (err) {
-    const { status = 500, message } = err as GenericError;
-    return res.status(status).send(message);
-  }
-};

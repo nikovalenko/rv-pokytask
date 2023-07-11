@@ -1,85 +1,107 @@
-import { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import { Request, Response } from 'express';
 import { LAST_POKEMON, PAGE_LIMIT, POKEMONS_URL, TYPES_URL } from '../constants/pokeApi.constants';
-import { GenericError, PokemonResponse, PokemonsResponse, TypeResponse } from '../utils/interfaces';
-import {
-  handleRequest,
-  parseCSV,
-  getDataAboutPokemon,
-  getMainPokemonData,
-  handleGeneralErrors,
-} from '../utils/utils';
+
+import { parseCSV, getDataAboutPokemon, getMainPokemonData, errorHandle } from '../utils/utils';
+import { GetPokemonInfo, GetPokemonsByType, GetPokemonsResponse } from '../utils/app.interfaces';
+import { PokemonResponse, PokemonsResponse, TypeResponse } from '../utils/api.interfaces';
 
 export class PokeService {
   public welcomeMessage(req: Request, res: Response): Response<any, Record<string, any>> {
     return res.status(200).send('Welcome to pokeAPI REST by Mykyta Kovalenko');
   }
 
-  public async getPokemons(req: Request, res: Response): Promise<void> {
-    await handleGeneralErrors(async () => {
+  public async getPokemons(
+    req: Request,
+    res: Response,
+  ): Promise<GetPokemonsResponse | Response<any, Record<string, any>>> {
+    try {
       const param = req.params.page;
       const pageNum = parseInt(param, 10);
 
+      if (Number.isNaN(pageNum)) {
+        return res.status(400).json({ error: 'Page number is invalid' });
+      }
+
       const url = `${POKEMONS_URL}/?limit=${PAGE_LIMIT}&offset=${(pageNum - 1) * 20}`;
 
-      const requestConfig: AxiosRequestConfig = {
-        method: 'get',
-        url,
-      };
-
-      const { previous, results } = await handleRequest<PokemonsResponse>(requestConfig, res);
+      const {
+        data: { previous, results },
+        status,
+      } = await axios.get<PokemonsResponse>(url, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
 
       const pokemons = results
         .map(pokemon => getMainPokemonData(pokemon))
         .filter(pokemon => pokemon.id <= LAST_POKEMON);
 
-      return {
+      const data = {
         nextPage: pokemons.length < PAGE_LIMIT ? null : pageNum + 1,
         currPage: pageNum,
         prevPage: previous ? pageNum - 1 : null,
         pokemons,
       };
-    }, res);
+
+      return res.status(status).json(data);
+    } catch (err) {
+      return errorHandle(err, res);
+    }
   }
 
-  public async getPokemon(req: Request, res: Response): Promise<void> {
-    await handleGeneralErrors(async () => {
+  public async getPokemon(
+    req: Request,
+    res: Response,
+  ): Promise<GetPokemonInfo | Response<any, Record<string, any>>> {
+    try {
       const { param } = req.params;
 
-      const requestConfig: AxiosRequestConfig = {
-        method: 'get',
-        url: `${POKEMONS_URL}${param}`,
-      };
+      const url = `${POKEMONS_URL}${param}`;
 
-      const response = await handleRequest<PokemonResponse>(requestConfig, res);
+      const { data } = await axios.get<PokemonResponse>(url, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
 
-      return getDataAboutPokemon(response);
-    }, res);
+      const proccessed = getDataAboutPokemon(data);
+      return res.status(200).json(proccessed);
+    } catch (err) {
+      return errorHandle(err, res);
+    }
   }
 
-  public async getPokemonsByType(req: Request, res: Response): Promise<void> {
-    await handleGeneralErrors(async () => {
+  public async getPokemonsByType(
+    req: Request,
+    res: Response,
+  ): Promise<GetPokemonsByType | Response<any, Record<string, any>>> {
+    try {
       const { type } = req.params;
 
-      const requestConfig: AxiosRequestConfig = {
-        method: 'get',
-        url: `${TYPES_URL}${type}`,
-      };
+      const url = `${TYPES_URL}${type}`;
 
-      const { pokemon } = await handleRequest<TypeResponse>(requestConfig, res);
+      const { data } = await axios.get<TypeResponse>(url, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
 
-      const pokemons = pokemon
+      const pokemons = data.pokemon
         .map(({ pokemon }) => getMainPokemonData(pokemon))
         .filter(pokemon => pokemon.id <= LAST_POKEMON);
 
-      return { pokemons };
-    }, res);
+      return res.status(200).json({ pokemons });
+    } catch (err) {
+      return errorHandle(err, res);
+    }
   }
 
   public async getPokemonsUpload(
     req: Request,
     res: Response,
-  ): Promise<Response<any, Record<string, any>>> {
+  ): Promise<GetPokemonInfo[] | Response<any, Record<string, any>>> {
     try {
       if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
@@ -87,24 +109,27 @@ export class PokeService {
 
       const parseResults = await parseCSV(req.file.path);
 
-      const pokemons = parseResults.map(record => record.pokemon);
+      const pokemons: string[] = parseResults.map(record => record.pokemon);
 
       const requests = pokemons.map(param => {
-        const requestConfig: AxiosRequestConfig = {
-          method: 'get',
-          url: `${POKEMONS_URL}${param}`,
-        };
-        return handleRequest(requestConfig, res);
+        const url = `${POKEMONS_URL}${param}`;
+
+        const request = axios.get<PokemonResponse>(url, {
+          headers: {
+            Accept: 'application/json',
+          },
+        });
+
+        return request;
       });
 
       const results = await Promise.all(requests);
 
-      const data = results.map(result => getDataAboutPokemon(result as PokemonResponse));
+      const data = results.map(result => getDataAboutPokemon(result.data as PokemonResponse));
 
       return res.status(200).json(data);
     } catch (err) {
-      const { status = 500, message } = err as GenericError;
-      return res.status(status).send(message);
+      return errorHandle(err, res);
     }
   }
 }

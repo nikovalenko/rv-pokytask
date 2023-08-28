@@ -1,10 +1,9 @@
 import 'tailwindcss/tailwind.css';
 
+import { Image, Title } from 'components';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-
-import { Image, Title } from '../../../../components';
-import { Pokemon } from '../../../../types/interfaces';
+import { Pokemon } from 'types/interfaces';
 
 interface PokemonProps {
   id: Pokemon['id'];

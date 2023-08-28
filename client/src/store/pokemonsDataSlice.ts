@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { saveAs } from 'file-saver';
-
-import { Pokemon } from '../types/interfaces';
+import { Pokemon } from 'types/interfaces';
 
 interface PokemonsDataState {
   pokemons: Pokemon[];

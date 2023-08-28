@@ -5,8 +5,8 @@ import multer from 'multer';
 import fs from 'fs';
 import mongoose, { ConnectOptions } from 'mongoose';
 
-import { Controller } from './main.controller';
 import { MONGO_URL } from './constants/pokeApi.constants';
+import { Controller } from './main.controller';
 
 class App {
   public app: Application;
@@ -59,7 +59,6 @@ class App {
         console.error('MongoDB connection error:', error);
       });
   }
-
 }
 
 export default new App().app;

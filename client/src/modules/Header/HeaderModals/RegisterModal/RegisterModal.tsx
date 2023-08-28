@@ -1,8 +1,7 @@
+import { Button } from 'components';
+import Modal from 'components/Modal/Modal';
+import RegistrForm from 'modules/Header/HeaderForms/RegistrForm';
 import React, { FC, useState } from 'react';
-
-import { Button } from '../../../../components';
-import Modal from '../../../../components/Modal/Modal';
-import { RegistrForm } from '../..';
 
 const RegisterModal: FC = () => {
   const [isOpen, setIsOpen] = useState(false);

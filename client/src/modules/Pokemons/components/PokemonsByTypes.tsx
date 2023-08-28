@@ -1,11 +1,11 @@
 import 'tailwindcss/tailwind.css';
 
+import { PokemonTypes } from 'config/config';
+import { TypeSelect } from 'modules/Pokemons/TypeSelector';
 import React, { FC } from 'react';
+import { useAppSelector } from 'store';
+import { Pokemon } from 'types/interfaces';
 
-import { PokemonTypes } from '../../../config/config';
-import { useAppSelector } from '../../../store';
-import { Pokemon } from '../../../types/interfaces';
-import { TypeSelect } from '../TypeSelector';
 import PokemonComponent from './Pokemon/PokemonComponent';
 
 const PokemonsByTypes: FC = () => {

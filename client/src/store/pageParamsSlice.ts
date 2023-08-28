@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-import { PageParams } from '../types/interfaces';
-import { fetchPokemons } from './pokemonsSlice';
+import { fetchPokemons } from 'store/pokemonsSlice';
+import { PageParams } from 'types/interfaces';
 
 interface PageParamsState {
   pageParams: PageParams;

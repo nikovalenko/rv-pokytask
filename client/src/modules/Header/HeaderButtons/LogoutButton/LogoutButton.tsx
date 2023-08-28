@@ -1,10 +1,9 @@
 import 'tailwindcss/tailwind.css';
 
+import { Button } from 'components';
 import React, { FC } from 'react';
-
-import { Button } from '../../../../components';
-import { useAppDispatch } from '../../../../store';
-import { removeToken } from '../../../../store/tokenSlice';
+import { useAppDispatch } from 'store';
+import { removeToken } from 'store/tokenSlice';
 
 const LogoutButton: FC = () => {
   const dispatch = useAppDispatch();

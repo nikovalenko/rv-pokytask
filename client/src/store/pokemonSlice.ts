@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-import { POKEMON_URL } from '../config/config';
-import { Pokemon } from '../types/interfaces';
-import { fetchPokemons } from './pokemonsSlice';
+import { POKEMON_URL } from 'config/config';
+import { fetchPokemons } from 'store/pokemonsSlice';
+import { Pokemon } from 'types/interfaces';
 
 interface PokemonState {
   pokemon: Pokemon;
@@ -41,7 +40,7 @@ export const PokemonSlice = createSlice({
       state.pokemon = action.payload;
     });
 
-    builder.addCase(fetchPokemons.fulfilled, (state) => {
+    builder.addCase(fetchPokemons.fulfilled, state => {
       state.pokemon = initialState.pokemon;
     });
   },

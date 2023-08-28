@@ -1,12 +1,11 @@
 import 'tailwindcss/tailwind.css';
 
+import { Image, Page } from 'components';
+import { PokemonInfo, PokemonNav } from 'modules/Pokemons/components';
 import React, { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
-import { Image, Page } from '../../components';
-import { PokemonInfo, PokemonNav } from '../../modules/Pokemons/components';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { fetchPokemon } from '../../store/pokemonSlice';
+import { useAppDispatch, useAppSelector } from 'store';
+import { fetchPokemon } from 'store/pokemonSlice';
 
 interface PokemonPageProps {
   id?: string;

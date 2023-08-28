@@ -1,11 +1,10 @@
 import axios from 'axios';
+import { Button } from 'components';
+import { UPLOAD_URL } from 'config/config';
 import React, { FC, useState } from 'react';
-
-import { Button } from '../../../../components';
-import { UPLOAD_URL } from '../../../../config/config';
-import { useAppDispatch, useAppSelector } from '../../../../store';
-import { saveFetchedJson } from '../../../../store/pokemonsDataSlice';
-import { uploadFailure, uploadRequest } from '../../../../store/uploadSlice';
+import { useAppDispatch, useAppSelector } from 'store';
+import { saveFetchedJson } from 'store/pokemonsDataSlice';
+import { uploadFailure, uploadRequest } from 'store/uploadSlice';
 
 const UploadButton: FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);

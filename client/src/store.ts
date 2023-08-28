@@ -1,12 +1,11 @@
 import { configureStore, ConfigureStoreOptions } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-
-import { PageParamsSlice } from './store/pageParamsSlice';
-import { PokemonsByTypeSlice } from './store/pokemonByTypesSlice';
-import { PokemonsDataSlice } from './store/pokemonsDataSlice';
-import { PokemonSlice } from './store/pokemonSlice';
-import { PokemonsSlice } from './store/pokemonsSlice';
-import { TokenSlice } from './store/tokenSlice';
+import { PageParamsSlice } from 'store/pageParamsSlice';
+import { PokemonsByTypeSlice } from 'store/pokemonByTypesSlice';
+import { PokemonsDataSlice } from 'store/pokemonsDataSlice';
+import { PokemonSlice } from 'store/pokemonSlice';
+import { PokemonsSlice } from 'store/pokemonsSlice';
+import { TokenSlice } from 'store/tokenSlice';
 
 const createStore = (options?: ConfigureStoreOptions['preloadedState']) =>
   configureStore({

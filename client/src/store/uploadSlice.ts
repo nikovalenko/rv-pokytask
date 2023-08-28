@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-import { Pokemon } from '../types/interfaces';
+import { Pokemon } from 'types/interfaces';
 
 interface UploadState {
   csvPokemons: Pokemon[];

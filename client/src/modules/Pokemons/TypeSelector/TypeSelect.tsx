@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FC } from 'react';
-
-import { useAppDispatch } from '../../../store';
-import { fetchPokemonsByType } from '../../../store/pokemonByTypesSlice';
+import { useAppDispatch } from 'store';
+import { fetchPokemonsByType } from 'store/pokemonByTypesSlice';
 
 interface TypeSelectProps {
   options: string[];

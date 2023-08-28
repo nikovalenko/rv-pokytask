@@ -1,9 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { Button, Ellipsis } from 'components';
 import React, { FC } from 'react';
-
-import { Button, Ellipsis } from '../../../components';
-import { useAppDispatch,useAppSelector } from '../../../store';
-import { fetchPokemons } from '../../../store/pokemonsSlice';
+import { useAppDispatch, useAppSelector } from 'store';
+import { fetchPokemons } from 'store/pokemonsSlice';
 
 const NextPage: FC = () => {
   const dispatch = useAppDispatch();

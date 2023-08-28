@@ -1,8 +1,7 @@
 import 'tailwindcss/tailwind.css';
 
+import { Header } from 'modules/Header';
 import React, { FC, ReactNode } from 'react';
-
-import { Header } from '../../modules/Header';
 
 interface PageProps {
   children: ReactNode | undefined;

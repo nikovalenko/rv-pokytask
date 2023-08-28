@@ -1,6 +1,6 @@
 import 'tailwindcss/tailwind.css';
 
-import React, { ReactNode, useEffect, useRef } from 'react';
+import React, { FC, ReactNode, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 
 const modalOverlayClasses = 'fixed inset-0 flex items-center justify-center bg-opacity-75 bg-gray-900';
@@ -11,7 +11,7 @@ type ModalProps = {
   children: ReactNode;
 };
 
-const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
+const Modal: FC<ModalProps> = ({ onClose, children }) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

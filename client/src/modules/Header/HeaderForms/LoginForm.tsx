@@ -1,11 +1,10 @@
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
+import { LOGIN_URL, SALT } from 'config/config';
 import { useFormik } from 'formik';
 import React, { FC } from 'react';
-
-import { LOGIN_URL, SALT } from '../../../config/config';
-import { useAppDispatch } from '../../../store';
-import { setToken } from '../../../store/tokenSlice';
+import { useAppDispatch } from 'store';
+import { setToken } from 'store/tokenSlice';
 
 type LoginFormProps = {
   onClose: () => void;

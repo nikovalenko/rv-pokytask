@@ -1,9 +1,10 @@
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
   Object.assign(fallback, {
-    crypto: require.resolve("crypto-browserify"), // require.resolve("crypto-browserify") can be polyfilled here if needed
+    crypto: require.resolve('crypto-browserify'), // require.resolve("crypto-browserify") can be polyfilled here if needed
     stream: false, // require.resolve("stream-browserify") can be polyfilled here if needed
     assert: false, // require.resolve("assert") can be polyfilled here if needed
     http: false, // require.resolve("stream-http") can be polyfilled here if needed
@@ -12,6 +13,10 @@ module.exports = function override(config) {
     url: false, // require.resolve("url") can be polyfilled here if needed
     zlib: false, // require.resolve("browserify-zlib") can be polyfilled here if needed
   });
+  config.resolve = {
+    ...config.resolve,
+    alias: { '@/': path.resolve(__dirname, 'src/') },
+  };
   config.resolve.fallback = fallback;
   config.plugins = (config.plugins || []).concat([
     new webpack.ProvidePlugin({
@@ -26,6 +31,10 @@ module.exports = function override(config) {
     loader: require.resolve('source-map-loader'),
     resolve: {
       fullySpecified: false,
+      extensions: ['', '.js', '.jsx', '.ts', '.tsx', '.scss'],
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
     },
   });
   return config;

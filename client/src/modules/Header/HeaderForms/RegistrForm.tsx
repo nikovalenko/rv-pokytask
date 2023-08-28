@@ -1,11 +1,8 @@
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
-// import bcrypt from 'bcrypt';
-// import crypto from 'crypto';
+import { REGISTER_URL, SALT } from 'config/config';
 import { useFormik } from 'formik';
-import React from 'react';
-
-import { REGISTER_URL, SALT } from '../../../config/config';
+import React, { FC } from 'react';
 
 type RegistrationFormProps = {
   onClose: () => void;
@@ -23,7 +20,7 @@ type InputErrors = {
   password?: string;
 };
 
-const RegistrationForm: React.FC<RegistrationFormProps> = ({ onClose }) => {
+const RegistrationForm: FC<RegistrationFormProps> = ({ onClose }) => {
   const handleSubmit = async (values: RefistrData) => {
     try {
       const hashedPassword = await bcrypt.hash(values.password, SALT);

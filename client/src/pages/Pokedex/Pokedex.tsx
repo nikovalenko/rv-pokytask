@@ -1,9 +1,8 @@
 import 'tailwindcss/tailwind.css';
 
+import { Page } from 'components';
+import { Pokemons } from 'modules/Pokemons/components';
 import React, { FC } from 'react';
-
-import { Page } from '../../components';
-import { Pokemons } from '../../modules/Pokemons/components';
 
 const Pokedex: FC = () => {
   return (

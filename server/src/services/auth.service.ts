@@ -1,14 +1,12 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
+
+import { User } from '../models';
 import { JWT_SECRET, SALT } from '../constants/pokeApi.constants';
 
 export class AuthService {
-  public async login(
-    req: Request,
-    res: Response,
-  ): Promise<Response<any, Record<string, any>>> {
+  public async login(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       const { email, password } = req.body;
 
@@ -29,10 +27,7 @@ export class AuthService {
     }
   }
 
-  public async register(
-    req: Request,
-    res: Response,
-  ): Promise<Response<any, Record<string, any>>> {
+  public async register(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       const { name, email, password } = req.body;
       const existingUser = await User.findOne({ email });

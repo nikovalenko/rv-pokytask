@@ -1,11 +1,10 @@
 import 'tailwindcss/tailwind.css';
 
+import { Field, Title } from 'components';
 import React, { FC } from 'react';
+import { PokemonInfo } from 'types/interfaces';
 
-import { Field, Title } from '../../../../components';
-import { PokemonInfo } from '../../../../types/interfaces';
-
-type PokemonInfoProps = PokemonInfo
+type PokemonInfoProps = PokemonInfo;
 
 const PokemonInfoComponent: FC<PokemonInfoProps> = props => {
   const { name, height, weight, hp, attack, defense } = props;

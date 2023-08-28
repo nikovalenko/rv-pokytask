@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
-import { LAST_POKEMON, PAGE_LIMIT, POKEMONS_URL, TYPES_URL } from '../constants/pokeApi.constants';
 
 import { parseCSV, getDataAboutPokemon, getMainPokemonData, errorHandle } from '../utils/utils';
 import { GetPokemonInfo, GetPokemonsByType, GetPokemonsResponse } from '../utils/app.interfaces';
 import { PokemonResponse, PokemonsResponse, TypeResponse } from '../utils/api.interfaces';
+import { LAST_POKEMON, PAGE_LIMIT, POKEMONS_URL, TYPES_URL } from '../constants/pokeApi.constants';
 
 export class PokeService {
-  public welcomeMessage(req: Request, res: Response): Response<any, Record<string, any>> {
+  public welcomeMessage(_req: Request, res: Response): Response<any, Record<string, any>> {
     return res.status(200).send('Welcome to pokeAPI REST by Mykyta Kovalenko');
   }
 

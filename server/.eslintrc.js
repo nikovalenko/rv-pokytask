@@ -44,5 +44,6 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     '@typescript-eslint/no-explicit-any': 'off',
     'no-shadow': 'off',
+    'import/no-unresolved': 'off',
   },
 };

@@ -9,7 +9,7 @@ const HeaderNav: FC = () => (
       <h2 className="text-base">To Pokedex</h2>
     </Link>
     <Link to={'/types'}>
-      <h2 className=" text-base">To Types</h2>
+      <h2 className="text-base">To Types</h2>
     </Link>
   </div>
 );

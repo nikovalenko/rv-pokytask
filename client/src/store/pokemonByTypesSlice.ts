@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-import { TYPES_URL } from '../config/config';
-import { Pokemon } from '../types/interfaces';
+import { TYPES_URL } from 'config/config';
+import { Pokemon } from 'types/interfaces';
 
 interface PokemonsByTypeState {
   pokemonsByType: Pokemon[];

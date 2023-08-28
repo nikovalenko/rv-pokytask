@@ -1,10 +1,9 @@
 import 'tailwindcss/tailwind.css';
 
+import Pokedex from 'pages/Pokedex';
+import PokemonPage from 'pages/Pokemon/PokemonPage';
+import PokemonTypePage from 'pages/PokemonTypePage';
 import React, { Route, Routes } from 'react-router-dom';
-
-import Pokedex from '../../pages/Pokedex';
-import PokemonPage from '../../pages/Pokemon/PokemonPage';
-import PokemonTypePage from '../../pages/PokemonTypePage';
 
 export const App = () => {
   return (

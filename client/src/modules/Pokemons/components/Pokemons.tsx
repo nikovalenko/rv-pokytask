@@ -1,10 +1,10 @@
 import 'tailwindcss/tailwind.css';
 
 import React, { FC, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'store';
+import { fetchPokemons } from 'store/pokemonsSlice';
+import { Pokemon } from 'types/interfaces';
 
-import { useAppDispatch, useAppSelector } from '../../../store';
-import { fetchPokemons } from '../../../store/pokemonsSlice';
-import { Pokemon } from '../../../types/interfaces';
 import NextPage from '../NextPage';
 import PokemonComponent from './Pokemon/PokemonComponent';
 
